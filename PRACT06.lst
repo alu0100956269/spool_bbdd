@@ -1,0 +1,333 @@
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> REM 1
+SQL> SELECT SYSDATE;
+SELECT SYSDATE
+             *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT SYSDATE
+  2  FROM DUAL;
+
+SYSDATE                                                                         
+---------                                                                       
+17-NOV-17                                                                       
+
+SQL> SELECT SYSDATETIME
+  2  FROM DUAL;
+SELECT SYSDATETIME
+       *
+ERROR at line 1:
+ORA-00904: "SYSDATETIME": invalid identifier 
+
+
+SQL> SELECT CONVERT (TIME, SYSDATETIME());
+SELECT CONVERT (TIME, SYSDATETIME())
+                                   *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT CONVERT (TIME, SYSDATETIME())
+  2  FROM DUAL;
+SELECT CONVERT (TIME, SYSDATETIME())
+                      *
+ERROR at line 1:
+ORA-00904: "SYSDATETIME": invalid identifier 
+
+
+SQL> SELECT EXTRACT (HOUR FROM SYSDATE);
+SELECT EXTRACT (HOUR FROM SYSDATE)
+                                 *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT EXTRACT (HOUR FROM SYSDATE)
+  2  FROM DUAL;
+SELECT EXTRACT (HOUR FROM SYSDATE)
+                          *
+ERROR at line 1:
+ORA-30076: invalid extract field for extract source 
+
+
+SQL> select to_char(sysdate, 'HH24:MI:SS') from dual;
+
+TO_CHAR(                                                                        
+--------                                                                        
+12:14:36                                                                        
+
+SQL> REM 3
+SQL> select to_char(sysdate, 'DAY', 'NLS_DATE_LANGUAGE=SPANISH')
+  2  from dual ;
+
+TO_CHAR(SYSDATE,'DAY','NLS_DATE_LANG                                            
+------------------------------------                                            
+VIERNES                                                                         
+
+SQL> SELECT SYSTIMESTAMP FROM DUAL;
+
+SYSTIMESTAMP                                                                    
+---------------------------------------------------------------------------     
+17-NOV-17 12.19.03.950267 PM +00:00                                             
+
+SQL> SELECT SYSTIMESTAMP(8) FROM DUAL;
+
+SYSTIMESTAMP(8)                                                                 
+---------------------------------------------------------------------------     
+17-NOV-17 12.19.40.62151400 PM +00:00                                           
+
+SQL> SELECT CURRENT_TIMESTAMP FROM DUAL;
+
+CURRENT_TIMESTAMP                                                               
+---------------------------------------------------------------------------     
+17-NOV-17 12.20.19.999399 PM +00:00                                             
+
+SQL> REM AADIR A LA TABLA DEPARTAMENTO UNA NUEVA COLUMNA
+SQL> ALTER TABLE DEPARTAMENTO
+  2  ADD (D1 TIMESTAMP(8) DEFAULT SYSTIMESTAMP(8));
+
+Table altered.
+
+SQL> SELECT * FROM DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         1 ANALISIS MATEMATICO                                                  
+17-NOV-17 12.22.44.59697800 PM                                                  
+                                                                                
+         2 ASTROFISICA                                                          
+17-NOV-17 12.22.44.59697800 PM                                                  
+                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+17-NOV-17 12.22.44.59697800 PM                                                  
+                                                                                
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         4 MATEMATICA FUNDAMENTAL                                               
+17-NOV-17 12.22.44.59697800 PM                                                  
+                                                                                
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  MODIFY (D1 TIMESTAMP(9));
+
+Table altered.
+
+SQL> SELECT * FROM DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         1 ANALISIS MATEMATICO                                                  
+17-NOV-17 12.22.44.596978000 PM                                                 
+                                                                                
+         2 ASTROFISICA                                                          
+17-NOV-17 12.22.44.596978000 PM                                                 
+                                                                                
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+17-NOV-17 12.22.44.596978000 PM                                                 
+                                                                                
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+D1                                                                              
+---------------------------------------------------------------------------     
+         4 MATEMATICA FUNDAMENTAL                                               
+17-NOV-17 12.22.44.596978000 PM                                                 
+                                                                                
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  RENAME COLUMN D1 TO D2;
+
+Table altered.
+
+SQL> DESCRIBE DEPARTAMENTO;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(60)
+ D2                                                 TIMESTAMP(9)
+
+SQL> ALTER TABLE DEPARTAMENTO
+  2  DROP COLUMN D2;
+
+Table altered.
+
+SQL> DESCRIBE DEPARTAMENTO;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CD                                        NOT NULL NUMBER(2)
+ D                                                  VARCHAR2(60)
+
+SQL> DROP TABLE DEPARTAMENTO;
+DROP TABLE DEPARTAMENTO
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys 
+
+
+SQL> REM 3
+SQL> SELECT SYSDATE 'DAY' FROM DUAL;
+SELECT SYSDATE 'DAY' FROM DUAL
+               *
+ERROR at line 1:
+ORA-00923: FROM keyword not found where expected 
+
+
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY:DD:MM:YYYY')
+  2  FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAY:DD:MM:YYYY')                                               
+-----------------------------------------------                                 
+FRIDAY   :17:11:2017                                                            
+
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY DD:MM:YYYY')
+  2  FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAYDD:MM:YYYY')                                                
+-----------------------------------------------                                 
+FRIDAY    17:11:2017                                                            
+
+SQL> SELECT TO_CHAR(SYSDATE, 'DAY DD/MM/YYYY')
+  2  FROM DUAL;
+
+TO_CHAR(SYSDATE,'DAYDD/MM/YYYY')                                                
+-----------------------------------------------                                 
+FRIDAY    17/11/2017                                                            
+
+SQL> REM CONSULTA DE CLASE
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  WHERE COUNT(DISTINCT T) >= 2
+  4  GROUP BY DNI;
+WHERE COUNT(DISTINCT T) >= 2
+      *
+ERROR at line 3:
+ORA-00934: group function is not allowed here 
+
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  WHERE DISTINCT T IN (SELECT COUNT(DISTINCT T)
+  4  
+SQL> 
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  GROUP BY DNI, T
+  4  HAVING COUNT(DISTINCT T) >= 2;
+
+no rows selected
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  GROUP BY DNI
+  4  HAVING COUNT(DISTINCT T) >= 2;
+
+       DNI                                                                      
+----------                                                                      
+      4444                                                                      
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  GROUP BY DNI
+  4  HAVING COUNT(DISTINCT T) >= 2
+  5  WHERE FF=NULL;
+WHERE FF=NULL
+*
+ERROR at line 5:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  GROUP BY DNI
+  4  HAVING COUNT(DISTINCT T) >= 2
+  5  WHERE FF = 'NULL';
+WHERE FF = 'NULL'
+*
+ERROR at line 5:
+ORA-00933: SQL command not properly ended 
+
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  WHERE FF = 'NULL';
+WHERE FF = 'NULL'
+           *
+ERROR at line 3:
+ORA-01858: a non-numeric character was found where a numeric was expected 
+
+
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  WHERE FF=NULL
+  4  GROUP BY DNI
+  5  HAVING COUNT(DISTINCT T) >= 2;
+
+no rows selected
+
+SQL> REM CONSULTA DE CLASE (ACABADA CORRECTAMENTE)
+SQL> SELECT DNI
+  2  FROM PLAN_DOCENTE NATURAL JOIN ASIGNATURA
+  3  WHERE FF=NULL
+  4  GROUP BY DNI
+  5  HAVING COUNT(DISTINCT T) >= 2;
+
+no rows selected
+
+SQL> SELECT TO_CHAR(SYSDATE, 'HH24:MI:SS')
+  2  FROM DUAL;
+
+TO_CHAR(                                                                        
+--------                                                                        
+12:54:43                                                                        
+
+SQL> REM 5
+SQL> SELECT SYSDATE
+  2  FROM DUAL
+  3  MINUS
+  4  SELECT FI
+  5  FROM PLAN_DOCENTE
+  6  WHERE (DNI=8) AND (CAS=11);
+
+SYSDATE                                                                         
+---------                                                                       
+17-NOV-17                                                                       
+
+SQL> SELECT COUNT(SYSDATE - FI)
+  2  FROM PLAN_DOCENTE
+  3  WHERE (DNI=8) AND (CAS=11);
+
+COUNT(SYSDATE-FI)                                                               
+-----------------                                                               
+                0                                                               
+
+SQL> SELECT COUNT(SYSDATE - FI)
+  2  FROM PLAN_DOCENTE NATURAL JOIN DUAL
+  3  WHERE (DNI=8) AND (CAS=11);
+
+COUNT(SYSDATE-FI)                                                               
+-----------------                                                               
+                0                                                               
+
+SQL> SELECT SYSDATE - FI
+  2  FROM PLAN_DOCENTE
+  3  WHERE (DNI=8) AND (CAS=11);
+
+no rows selected
+
+SQL> SELECT (SYSDATE-FI)
+  2  FROM PLAN_DOCENTE NATURAL JOIN DUAL
+  3  WHERE (DNI=8) AND (CAS=11);
+
+no rows selected
+
+SQL> SPOOL OFF
