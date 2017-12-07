@@ -778,3 +778,442 @@ SQL> SELECT * FROM VISTA2;
 19 rows selected.
 
 SQL> EXIT
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> REM 19 EXPLICACION: PORQUE AL HACER LA VISTA SOBRE LA YUNCION DE DOS TABLAS LA NUEVA VISTA NO ES ACTUALIZABLE. ADEMAS, LA CLAVE PRIMARIA DE LA TABLA QUE DEBE SER MODIFICADA (EN ESTE CASO ASIGNATURA) NO APARECE EN LA VISTA POR TANTO NO PUEDE SER ACTUALIZADA.
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 20
+SQL> DESCRIBE VISTA2;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DNI                                       NOT NULL NUMBER(8)
+ A                                         NOT NULL VARCHAR2(50)
+ T                                         NOT NULL VARCHAR2(4)
+ CUR                                                NUMBER(1)
+ CAR                                                NUMBER(3)
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 22
+SQL> SELECT * FROM VISTA2;
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      1010 INTELIGENCIA ARTIFICIAL                            GII           3   
+         4                                                                      
+                                                                                
+      1010 GESTION DE RIESGOS                                 GII           3   
+         4                                                                      
+                                                                                
+      1010 GESTION DE RIESGOS                                 GII           3   
+         4                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      1111 OPTIMIZACION                                       GII           1   
+         6                                                                      
+                                                                                
+      1111 OPTIMIZACION                                       GII           1   
+         6                                                                      
+                                                                                
+      2020 ALMACENES DE DATOS                                 MII           1   
+         7                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      2222 ALMACENES DE DATOS                                 MII           1   
+         7                                                                      
+                                                                                
+      2222 MINERIA DE DATOS                                   MII           1   
+         7                                                                      
+                                                                                
+      3030 OPTIMIZACION                                       GII           1   
+         6                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      3333 INTELIGENCIA ARTIFICIAL                            GII           3   
+         4                                                                      
+                                                                                
+      3333 GESTION DE RIESGOS                                 GII           3   
+         4                                                                      
+                                                                                
+      4444 BASE DE DATOS                                      GII           3   
+         7                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      4444 MINERIA DE DATOS                                   MII           1   
+         7                                                                      
+                                                                                
+      4444 INFORMATICA BASICA                                 GII           1   
+         7                                                                      
+                                                                                
+      5555 ALGEBRA                                            GII           1   
+         1                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      6666 ASTRONOMIA                                         GF            2   
+         3                                                                      
+                                                                                
+      7777 ANALISIS COMPLEJO                                  GM            4   
+         2                                                                      
+                                                                                
+      8888 ENSEANZA DE LA MATEMATICA                          GM            2   
+         5                                                                      
+                                                                                
+
+       DNI A                                                  T           CUR   
+---------- -------------------------------------------------- ---- ----------   
+       CAR                                                                      
+----------                                                                      
+      9999 CALCULO                                            GII           1   
+         8                                                                      
+                                                                                
+
+19 rows selected.
+
+SQL> SET LINESIZE 200
+SQL> SELECT * FROM VISTA2;
+
+       DNI A                                                  T           CUR        CAR                                                                                                                
+---------- -------------------------------------------------- ---- ---------- ----------                                                                                                                
+      1010 INTELIGENCIA ARTIFICIAL                            GII           3          4                                                                                                                
+      1010 GESTION DE RIESGOS                                 GII           3          4                                                                                                                
+      1010 GESTION DE RIESGOS                                 GII           3          4                                                                                                                
+      1111 OPTIMIZACION                                       GII           1          6                                                                                                                
+      1111 OPTIMIZACION                                       GII           1          6                                                                                                                
+      2020 ALMACENES DE DATOS                                 MII           1          7                                                                                                                
+      2222 ALMACENES DE DATOS                                 MII           1          7                                                                                                                
+      2222 MINERIA DE DATOS                                   MII           1          7                                                                                                                
+      3030 OPTIMIZACION                                       GII           1          6                                                                                                                
+      3333 INTELIGENCIA ARTIFICIAL                            GII           3          4                                                                                                                
+      3333 GESTION DE RIESGOS                                 GII           3          4                                                                                                                
+
+       DNI A                                                  T           CUR        CAR                                                                                                                
+---------- -------------------------------------------------- ---- ---------- ----------                                                                                                                
+      4444 BASE DE DATOS                                      GII           3          7                                                                                                                
+      4444 MINERIA DE DATOS                                   MII           1          7                                                                                                                
+      4444 INFORMATICA BASICA                                 GII           1          7                                                                                                                
+      5555 ALGEBRA                                            GII           1          1                                                                                                                
+      6666 ASTRONOMIA                                         GF            2          3                                                                                                                
+      7777 ANALISIS COMPLEJO                                  GM            4          2                                                                                                                
+      8888 ENSEANZA DE LA MATEMATICA                          GM            2          5                                                                                                                
+      9999 CALCULO                                            GII           1          8                                                                                                                
+
+19 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 23
+SQL> ROLLBACK WORK;
+
+Rollback complete.
+
+SQL> SELECT * FROM VISTA1;
+
+       CAS A                                                  T           CUR        CAR                                                                                                                
+---------- -------------------------------------------------- ---- ---------- ----------                                                                                                                
+         1 BASE DE DATOS                                      GII           3          7                                                                                                                
+         2 INTELIGENCIA ARTIFICIAL                            GII           3          4                                                                                                                
+         3 ALMACENES DE DATOS                                 MII           1          7                                                                                                                
+         4 MINERIA DE DATOS                                   MII           1          7                                                                                                                
+         5 INFORMATICA BASICA                                 GII           1          7                                                                                                                
+         6 ALGEBRA                                            GII           1          1                                                                                                                
+         7 CALCULO                                            GII           1          8                                                                                                                
+         8 OPTIMIZACION                                       GII           1          6                                                                                                                
+         9 GESTION DE RIESGOS                                 GII           3          4                                                                                                                
+        10 ASTRONOMIA                                         GF            2          3                                                                                                                
+        11 ENSEANZA DE LA MATEMATICA                          GM            2          5                                                                                                                
+
+       CAS A                                                  T           CUR        CAR                                                                                                                
+---------- -------------------------------------------------- ---- ---------- ----------                                                                                                                
+        12 ANALISIS COMPLEJO                                  GM            4          2                                                                                                                
+        13 ESTADISTICA                                        GII           3          6                                                                                                                
+
+13 rows selected.
+
+SQL> REM 21
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 21
+SQL> DROP VIEW VISTA1;
+
+View dropped.
+
+SQL> SELECT * FROM VISTA1;
+SELECT * FROM VISTA1
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> ROLLBACK WORK;
+
+Rollback complete.
+
+SQL> SELECT * FROM VISTA1;
+SELECT * FROM VISTA1
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 23
+SQL> REM NO SE PUEDE RECUPERAR LA VISTA YA QUE SE CREO DESPUES DEL ULTIMO COMMIT POR TANTO CUANDO HACEMOS EL ROLLBACK VOLVEMOS A UN ESTADO EN EL QUE NI LA HEMOS CREADO.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 24
+SQL> CREATE INDEX INDICE1
+  2  ON PROFESOR(T);
+ON PROFESOR(T)
+            *
+ERROR at line 2:
+ORA-00904: "T": invalid identifier 
+
+
+SQL> ON PROFESOR(P);
+SP2-0734: unknown command beginning "ON PROFESO..." - rest of line ignored.
+SQL> 
+SQL> 
+SQL> 
+SQL> CREATE INDEX INDICE1
+  2  ON PROFESOR(P);
+
+Index created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 24 PARTE2
+SQL> SELECT DNI FROM PROFESOR
+  2  WHERE
+  3  
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT DNI FROM PROFESOR
+  2  WHERE P='JUAN'
+  3  ;
+
+       DNI                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+      1111                                                                                                                                                                                              
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 25
+SQL> DROP INDEX INDICE1;
+
+Index dropped.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 26
+SQL> SELECT * FROM VISTA1;
+SELECT * FROM VISTA1
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 26
+SQL> 
+SQL> CREATE INDEX INDICE2
+  2  ON VISTA1(CAR);
+ON VISTA1(CAR)
+   *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> REM EVIDENTEMENTE NO SE PUEDE CREAR EL INDICE PORQUE LA VISTA NO EXISTE
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 27
+SQL> GRANT SELECT
+  2  ON DEPARTAMENTO, AREA, ASIGNATURA, TITULACION
+  3  TO ALUMNO;
+ON DEPARTAMENTO, AREA, ASIGNATURA, TITULACION
+               *
+ERROR at line 2:
+ORA-00990: missing or invalid privilege 
+
+
+SQL> 
+SQL> 
+SQL> GRANT SELECT
+  2  ON DEPARTAMENTO
+  3  TO ALUMNO;
+
+Grant succeeded.
+
+SQL> GRANT SELECT
+  2  ON &tabla
+  3  TO ALUMNO;
+Enter value for tabla: AREA
+old   2: ON &tabla
+new   2: ON AREA
+
+Grant succeeded.
+
+SQL> RUN
+  1  GRANT SELECT
+  2  ON &tabla
+  3* TO ALUMNO
+Enter value for tabla: ASIGNATURA
+old   2: ON &tabla
+new   2: ON ASIGNATURA
+
+Grant succeeded.
+
+SQL> RUN
+  1  GRANT SELECT
+  2  ON &tabla
+  3* TO ALUMNO
+Enter value for tabla: TITULACION
+old   2: ON &tabla
+new   2: ON TITULACION
+
+Grant succeeded.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 28
+SQL> GRANT INSERT
+  2  ON &TABLA
+  3  TO ALUMNO;
+Enter value for tabla: DEPARTAMENTO
+old   2: ON &TABLA
+new   2: ON DEPARTAMENTO
+
+Grant succeeded.
+
+SQL> GRANT INSERT, UPDATE, DELETE
+  2  ON &TABLA
+  3  TO ALUMNO;
+Enter value for tabla: DEPARTAMENTO
+old   2: ON &TABLA
+new   2: ON DEPARTAMENTO
+
+Grant succeeded.
+
+SQL> 
+SQL> RUN
+  1  GRANT INSERT, UPDATE, DELETE
+  2  ON &TABLA
+  3* TO ALUMNO
+Enter value for tabla: AREA
+old   2: ON &TABLA
+new   2: ON AREA
+
+Grant succeeded.
+
+SQL> GRANT UPDATE
+  2  ON &TABLA
+  3  TO ALUMNO
+  4  ;
+Enter value for tabla: ASIGNATURA
+old   2: ON &TABLA
+new   2: ON ASIGNATURA
+
+Grant succeeded.
+
+SQL> 
+SQL> RUN
+  1  GRANT UPDATE
+  2  ON &TABLA
+  3  TO ALUMNO
+  4* 
+Enter value for tabla: TITULACION
+old   2: ON &TABLA
+new   2: ON TITULACION
+
+Grant succeeded.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 29
+SQL> COMMIT WORK;
+
+Commit complete.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> CONNECT ALUMNO;
+ERROR:
+ORA-12162: TNS:net service name is incorrectly specified 
+
+
+Warning: You are no longer connected to ORACLE.
+SQL> 
+SQL> 
+SQL> CONNECT ALUMNO@EXTHOST.ETSII.ULL.ES
+ERROR:
+ORA-12541: TNS:no listener 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> SPOOL OFF
