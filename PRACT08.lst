@@ -1217,3 +1217,330 @@ SQL>
 SQL> 
 SQL> 
 SQL> SPOOL OFF
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> 
+SQL> REM 30
+SQL> 
+SQL> CONNECT ALUMNO@ORCLPDB1
+Connected.
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 31
+SQL> 
+SQL> SELECT *
+  2  FROM ALU0100956269.DEPARTAMENTO;
+
+        CD D                                                                    
+---------- ------------------------------------------------------------         
+         1 ANALISIS MATEMATICO                                                  
+         2 ASTROFISICA                                                          
+         3 ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                   
+         4 MATEMATICA FUNDAMENTAL                                               
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 32
+SQL> 
+SQL> SELECT *
+  2  FROM ALU0100956269.PROFESOR;
+FROM ALU0100956269.PROFESOR
+                   *
+ERROR at line 2:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> REM RESPUESTA: nO PODEMOS VERLA PORQUE ALUMNO NO TIENE PERMISO DE CONSULTA SOBRE LA TABLA PROFESOR
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 33
+SQL> INSERT INTO ALU0100956269
+  2  VALUES(5, 'ECONOMIA')
+  3  
+SQL> 
+SQL> INSERT INTO ALU0100956269.DEPARTAMENTO
+  2  VALUES(5, 'ECONOMIA');
+
+1 row created.
+
+SQL> UPDATE ALU0100956269.DEPARTAMENTO
+  2  SET D='ECONOMIA APLICADA'
+  3  WHERE CD=5;
+
+1 row updated.
+
+SQL> REM 34
+SQL> REM EL UPDATE DE ARRIBA
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 35
+SQL> 
+SQL> UPDATE ALU0100956269.TITULACION
+  2  SET FAC='ETSII'
+  3  WHERE FAC='GII';
+
+0 rows updated.
+
+SQL> SELECT * FROM TITULACION;
+SELECT * FROM TITULACION
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> SELECT * FROM ALU0100956269.TITULACION;
+
+T      FAC                                                                      
+------ -----                                                                    
+GF     FF                                                                       
+GM     FM                                                                       
+GII    FI                                                                       
+MII    FMEC                                                                     
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 35
+SQL> 
+SQL> UPDATE ALU0100956269.TITULACION
+  2  SET FAC='ETSII'
+  3  WHERE FAC='GII  ';
+
+0 rows updated.
+
+SQL> 7
+SP2-0226: Invalid line number 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 35
+SQL> 
+SQL> UPDATE ALU0100956269.TITULACION
+  2  SET FAC='ETSII'
+  3  WHERE T='GII  ';
+
+0 rows updated.
+
+SQL> UPDATE ALU0100956269.TITULACION
+  2  SET FAC='ETSII'
+  3  WHERE T='GII';
+
+0 rows updated.
+
+SQL> SELECT * FROM ALU0100956269.TITULACION;
+
+T      FAC                                                                      
+------ -----                                                                    
+GF     FF                                                                       
+GM     FM                                                                       
+GII    FI                                                                       
+MII    FMEC                                                                     
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> UPDATE ALU0100956269.TITULACION
+  2  SET FAC='ETSII'
+  3  WHERE T='GII   ';
+
+0 rows updated.
+
+SQL> 
+SQL> REM PONER EL UPDATE Y DESPUES COMO RESULTADO 1 ROW UPDATE
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 36
+SQL> 
+SQL> DELETE
+  2  FROM ALU0100956269.TITULACION
+  3  WHERE T='GII';
+FROM ALU0100956269.TITULACION
+                   *
+ERROR at line 2:
+ORA-01031: insufficient privileges 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 37
+SQL> 
+SQL> ROLLBACK WORK;
+
+Rollback complete.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 38
+SQL> 
+SQL> CREATE VIEW VISTA3
+  2  AS (SELECT A, CAR
+  3  FROM ASIGNATURA);
+FROM ASIGNATURA)
+     *
+ERROR at line 3:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> CREATE VIEW VISTA3
+  2  AS (SELECT A, CAR
+  3  FROM ALU0100956269.ASIGNATURA);
+
+View created.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 39
+SQL> SELECT *
+  2  FROM VISTA3;
+
+A                                                         CAR                   
+-------------------------------------------------- ----------                   
+BASE DE DATOS                                               7                   
+INTELIGENCIA ARTIFICIAL                                     4                   
+ALMACENES DE DATOS                                          7                   
+MINERIA DE DATOS                                            7                   
+INFORMATICA BASICA                                          7                   
+ALGEBRA                                                     1                   
+CALCULO                                                     8                   
+OPTIMIZACION                                                6                   
+GESTION DE RIESGOS                                          4                   
+ASTRONOMIA                                                  3                   
+ENSEANZA DE LA MATEMATICA                                   5                   
+
+A                                                         CAR                   
+-------------------------------------------------- ----------                   
+ANALISIS COMPLEJO                                           2                   
+ESTADISTICA                                                 6                   
+
+13 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 40
+SQL> 
+SQL> DROP VIEW VISTA3;
+
+View dropped.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 41
+SQL> 
+SQL> DROP TABLE ASIGNATURA;
+DROP TABLE ASIGNATURA
+           *
+ERROR at line 1:
+ORA-00942: table or view does not exist 
+
+
+SQL> DROP TABLE ALU0100956269.ASIGNATURA;
+DROP TABLE ALU0100956269.ASIGNATURA
+                         *
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> SPOOL OFF
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> 
+SQL> REVOKE ALL PRIVILEGES
+  2  
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 42
+SQL> 
+SQL> REVOKE ALL PRIVILEGES
+  2  FROM ALUMNO;
+REVOKE ALL PRIVILEGES
+*
+ERROR at line 1:
+ORA-01031: insufficient privileges 
+
+
+SQL> REVOKE ALL PRIVILEGES
+  2  ON &tabla
+  3  FROM ALUMNO;
+Enter value for tabla: DEPARTAMENTO
+old   2: ON &tabla
+new   2: ON DEPARTAMENTO
+
+Revoke succeeded.
+
+SQL> RUN
+  1  REVOKE ALL PRIVILEGES
+  2  ON &tabla
+  3* FROM ALUMNO
+Enter value for tabla: AREA
+old   2: ON &tabla
+new   2: ON AREA
+
+Revoke succeeded.
+
+SQL> RUN
+  1  REVOKE ALL PRIVILEGES
+  2  ON &tabla
+  3* FROM ALUMNO
+Enter value for tabla: ASIGNATURA
+old   2: ON &tabla
+new   2: ON ASIGNATURA
+
+Revoke succeeded.
+
+SQL> RUN
+  1  REVOKE ALL PRIVILEGES
+  2  ON &tabla
+  3* FROM ALUMNO
+Enter value for tabla: TITULACION
+old   2: ON &tabla
+new   2: ON TITULACION
+
+Revoke succeeded.
+
+SQL> 
+SQL> 
+SQL> SPOOL OFF
