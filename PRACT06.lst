@@ -798,3 +798,437 @@ ORA-01427: single-row subquery returns more than one row
 
 SQL> REM FALTAN LOS EJERCICIOS DEL 20 AL 25
 SQL> SPOOL OFF
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> 
+SQL> REM 20
+SQL> 
+SQL> SELECT P
+  2  FROM PROFESOR NATURAL JOIN PLAN_DOCENTE
+  3  WHERE FF IS NULL
+  4  GROUP BY P
+  5  HAVING SUM(CTA+CPA+CLA)=(SELECT MAX(SUM(CTA+CLA+CPA))
+  6  FROM PLAN DOCENTE
+  7  WHERE FF IS NULL
+  8  GROUP BY DNI);
+FROM PLAN DOCENTE
+     *
+ERROR at line 6:
+ORA-00942: table or view does not exist 
+
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT P
+  2  FROM PROFESOR NATURAL JOIN PLAN_DOCENTE
+  3  WHERE FF IS NULL
+  4  GROUP BY P
+  5  HAVING SUM(CTA+CPA+CLA)=(SELECT MAX(SUM(CTA+CLA+CPA))
+  6  FROM PLAN_DOCENTE
+  7  GROUP BY DNI);
+
+no rows selected
+
+SQL> 
+SQL> SELECT P
+  2  FROM PROFESOR NATURAL JOIN PLAN_DOCENTE
+  3  WHERE FF IS NULL
+  4  GROUP BY P
+  5  HAVING SUM(CTA+CPA+CLA)=(SELECT MAX(SUM(CTA+CLA+CPA))
+  6  FROM PLAN_DOCENTE
+  7  WHERE FF IS NULL
+  8  GROUP BY DNI);
+
+P                                                                               
+------------------------------------------------------------                    
+PEDRO                                                                           
+MARIA                                                                           
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 21
+SQL> 
+SQL> SELECT AVG(COUNT(DISTINCT A))
+  2  FROM ASIGNATURA;
+SELECT AVG(COUNT(DISTINCT A))
+           *
+ERROR at line 1:
+ORA-00978: nested group function without GROUP BY 
+
+
+SQL> SELECT AVG(COUNT(DISTINCT A))
+  2  FROM ASIGNATURA
+  3  GROUP BY CAR;
+
+AVG(COUNT(DISTINCTA))                                                           
+---------------------                                                           
+                1.625                                                           
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 22
+SQL> 
+SQL> SELECT AVG(COUNT(DISTINCT P))
+  2  FROM PROFESOR
+  3  
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 22
+SQL> 
+SQL> SELECT AVG(COUNT(DISTINCT P))
+  2  FROM PROFESOR NATURAL JOIN ASIGNATURA
+  3  GROUP BY CAR;
+
+AVG(COUNT(DISTINCTP))                                                           
+---------------------                                                           
+                 1.75                                                           
+
+SQL> 
+SQL> 
+SQL> SELECT AVG(COUNT(DISTINCT P))
+  2  FROM PROFESOR NATURAL JOIN ASIGNATURA
+  3  GROUP BY CD;
+GROUP BY CD
+         *
+ERROR at line 3:
+ORA-00904: "CD": invalid identifier 
+
+
+SQL> 
+SQL> 
+SQL> SELECT AVG(COUNT(DISTINCT P))
+  2  FROM PROFESOR NATURAL JOIN AREA
+  3  GROUP BY CD;
+
+AVG(COUNT(DISTINCTP))                                                           
+---------------------                                                           
+                  3.5                                                           
+
+SQL> SET LINESIZE 200
+SQL> SELECT * FROM PROFESOR;
+
+       DNI P                                                                   CAR CAT                                                                                                                  
+---------- ------------------------------------------------------------ ---------- -----                                                                                                                
+      1111 JUAN                                                                  6 CU                                                                                                                   
+      2222 CARLOS                                                                7 TU                                                                                                                   
+      3333 PEDRO                                                                 4 TEU                                                                                                                  
+      4444 MARIA                                                                 7 TU                                                                                                                   
+      5555 IVAN                                                                  1 CEU                                                                                                                  
+      6666 CARMEN                                                                3 CD                                                                                                                   
+      7777 MARIO                                                                 2 TU                                                                                                                   
+      8888 FRANCISCO                                                             5 TU                                                                                                                   
+      9999 ANGELA                                                                8 TEU                                                                                                                  
+      1010 DAVID                                                                 4 TU                                                                                                                   
+      2020 SOLEDAD                                                               7 CU                                                                                                                   
+
+       DNI P                                                                   CAR CAT                                                                                                                  
+---------- ------------------------------------------------------------ ---------- -----                                                                                                                
+      3030 JOSE MANUEL                                                           6 TEU                                                                                                                  
+      4040 CARMELO                                                               7 TU                                                                                                                   
+      5050 CARINA                                                                8 CEU                                                                                                                  
+
+14 rows selected.
+
+SQL> SELECT * FROM PROFESOR NATURAL JOIN AREA;
+
+       CAR        DNI P                                                            CAT   AR                                                                   CD                                        
+---------- ---------- ------------------------------------------------------------ ----- ------------------------------------------------------------ ----------                                        
+         1       5555 IVAN                                                         CEU   ALGEBRA                                                               4                                        
+         2       7777 MARIO                                                        TU    ANALISIS MATEMATICO                                                   1                                        
+         3       6666 CARMEN                                                       CD    ASTRONOMIA Y ASTROFISICA                                              2                                        
+         4       3333 PEDRO                                                        TEU   CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                        
+         4       1010 DAVID                                                        TU    CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                  3                                        
+         5       8888 FRANCISCO                                                    TU    DIDACTICA DE LA MATEMATICA                                            1                                        
+         6       3030 JOSE MANUEL                                                  TEU   ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                        
+         6       1111 JUAN                                                         CU    ESTADISTICA E INVESTIGACION OPERATIVA                                 3                                        
+         7       2222 CARLOS                                                       TU    LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                        
+         7       4444 MARIA                                                        TU    LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                        
+         7       2020 SOLEDAD                                                      CU    LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                        
+
+       CAR        DNI P                                                            CAT   AR                                                                   CD                                        
+---------- ---------- ------------------------------------------------------------ ----- ------------------------------------------------------------ ----------                                        
+         7       4040 CARMELO                                                      TU    LENGUAJES Y SISTEMAS INFORMATICOS                                     3                                        
+         8       5050 CARINA                                                       CEU   MATEMATICAS APLICADAS                                                 1                                        
+         8       9999 ANGELA                                                       TEU   MATEMATICAS APLICADAS                                                 1                                        
+
+14 rows selected.
+
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 23
+SQL> 
+SQL> SELECT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  
+SQL> 
+SQL> 
+SQL> SELECT AR
+  2  FROM AREA
+  3  GROUP BY CAR
+  4  
+SQL> 
+SQL> 
+SQL> SELECT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  WHERE CAR=(SELECT CAR
+  4  FROM AREA NATURAL JOIN ASIGNATURA
+  5  GROUP BY CAR
+  6  HAVING SUM(DISTINCT A)>3);
+SELECT AR
+ *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> SELECT AR
+  2  FROM AREA
+  3  WHERE CAR=(SELECT CAR
+  4  FROM AREA NATURAL JOIN ASIGNATURA
+  5  GROUP BY CAR
+  6  HAVING SUM(DISTINCT A)>3);
+SELECT AR
+ *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> SELECT CAR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  GROUP BY CAR
+  4  HAVING SUM(DISTINCT A)>3;
+SELECT CAR
+ *
+ERROR at line 1:
+ORA-01722: invalid number 
+
+
+SQL> 
+SQL> SELECT CAR FROM AREA;
+
+       CAR                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+         2                                                                                                                                                                                              
+         3                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         8                                                                                                                                                                                              
+
+8 rows selected.
+
+SQL> SELECT CAR FROM AREA NATURAL JOIN ASIGNATURA;
+
+       CAR                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+         8                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+         3                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+
+       CAR                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         2                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+
+13 rows selected.
+
+SQL> SELECT CAR
+  2  FROM AREA NATURAL JOIN PLAN_DOCENTE
+  3  GROUP BY CAR
+  4  HAVING MAX(COUNT(DISTINCT AR));
+HAVING MAX(COUNT(DISTINCT AR))
+           *
+ERROR at line 4:
+ORA-00935: group function is nested too deeply 
+
+
+SQL> SELECT CAR
+  2  FROM AREA NATURAL JOIN PLAN_DOCENTE
+  3  GROUP BY CAR
+  4  HAVING COUNT(DISTINCT AR)>3;
+
+no rows selected
+
+SQL> SELECT CAR
+  2  FROM AREA NATURAL JOIN PLAN_DOCENTE
+  3  GROUP BY CAR
+  4  HAVING COUNT(DISTINCT AR)<3;
+
+       CAR                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         1                                                                                                                                                                                              
+         6                                                                                                                                                                                              
+         2                                                                                                                                                                                              
+         5                                                                                                                                                                                              
+         4                                                                                                                                                                                              
+         8                                                                                                                                                                                              
+         3                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+
+8 rows selected.
+
+SQL> 
+SQL> SELECT * FROM ASIGNATURA;
+
+       CAS A                                                  T           CUR        CAR         CT         CP         CL                                                                               
+---------- -------------------------------------------------- ---- ---------- ---------- ---------- ---------- ----------                                                                               
+         1 BASE DE DATOS                                      GII           3          7          3        1.5        1.5                                                                               
+         2 INTELIGENCIA ARTIFICIAL                            GII           3          4        1.5        1.5          3                                                                               
+         3 ALMACENES DE DATOS                                 MII           1          7        1.5          0        1.5                                                                               
+         4 MINERIA DE DATOS                                   MII           1          7        1.5          0        1.5                                                                               
+         5 INFORMATICA BASICA                                 GII           1          7          3        1.5        1.5                                                                               
+         6 ALGEBRA                                            GII           1          1          3          3          0                                                                               
+         7 CALCULO                                            GII           1          8          3          3          0                                                                               
+         8 OPTIMIZACION                                       GII           1          6          3        1.5        1.5                                                                               
+         9 GESTION DE RIESGOS                                 GII           3          4          3          0          3                                                                               
+        10 ASTRONOMIA                                         GF            2          3          3        1.5        1.5                                                                               
+        11 ENSEANZA DE LA MATEMATICA                          GM            2          5          6          0          0                                                                               
+
+       CAS A                                                  T           CUR        CAR         CT         CP         CL                                                                               
+---------- -------------------------------------------------- ---- ---------- ---------- ---------- ---------- ----------                                                                               
+        12 ANALISIS COMPLEJO                                  GM            4          2        4.5          3          0                                                                               
+        13 ESTADISTICA                                        GII           3          6          0          0          0                                                                               
+
+13 rows selected.
+
+SQL> SELECT CAR FROM ASIGNATURA WHERE CAS=1;
+
+       CAR                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+         7                                                                                                                                                                                              
+
+SQL> 
+SQL> 
+SQL> REM 23
+SQL> 
+SQL> SELECT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  WHERE CAR=(SELECT CAR
+  4  FROM AREA NATURAL JOIN ASIGNATURA
+  5  GROUP BY CAR
+  6  HAVING COUNT(DISTINCT A) > 3);
+
+AR                                                                                                                                                                                                      
+------------------------------------------------------------                                                                                                                                            
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                                                                                       
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                                                                                       
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                                                                                       
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                                                                                       
+
+SQL> 
+SQL> 
+SQL> REM 23
+SQL> SELECT DISTINCT AR
+  2  FROM AREA NATURAL JOIN ASIGNATURA
+  3  GROUP BY CAR
+  4  
+SQL> 
+SQL> REM 23
+SQL> SELECT DISTINCT AR
+  2  FROM AREA
+  3  WHERE CAR=(SELECT CAR
+  4  FROM AREA NATURAL JOIN ASIGNATURA
+  5  GROUP BY CAR
+  6  HAVING COUNT(DISTINCT A) > 3);
+
+AR                                                                                                                                                                                                      
+------------------------------------------------------------                                                                                                                                            
+LENGUAJES Y SISTEMAS INFORMATICOS                                                                                                                                                                       
+
+SQL> 
+SQL> 
+SQL> REM 24
+SQL> SELECT DISTINCT AR
+  2  FROM AREA
+  3  WHERE CAR=(SELECT CAR
+  4  FROM AREA NATURAL JOIN ASIGNATURA
+  5  GROUP BY CAR
+  6  HAVING COUNT(DISTINCT A) > 6);
+
+no rows selected
+
+SQL> 
+SQL> 
+SQL> 
+SQL> SELECT D
+  2  FROM DEPARTAMENTO
+  3  WHERE CD=(SELECT CD
+  4  FROM AREA NATURAL JOIN PROFESOR
+  5  GROUP BY CD
+  6  HAVING MAX(COUNT(DISTINCT P)));
+HAVING MAX(COUNT(DISTINCT P)))
+           *
+ERROR at line 6:
+ORA-00935: group function is nested too deeply 
+
+
+SQL> 
+SQL> SELECT D
+  2  FROM DEPARTAMENTO
+  3  WHERE CD=(SELECT CD
+  4  FROM AREA NATURAL JOIN PROFESOR
+  5  GROUP BY CD
+  6  HAVING COUNT(DISTINCT P)=(SELECT MAX(COUNT(DISTINCT P))
+  7  FROM AREA NATURAL JOIN PROFESOR
+  8  GROUP BY CD));
+
+D                                                                                                                                                                                                       
+------------------------------------------------------------                                                                                                                                            
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                                                                                                      
+
+SQL> 
+SQL> 
+SQL> REM 25
+SQL> SELECT D
+  2  FROM DEPARTAMENTO
+  3  WHERE CD IN (SELECT CD
+  4  FROM AREA NATURAL JOIN PROFESOR
+  5  GROUP BY CD
+  6  HAVING COUNT(DISTINCT P)=(SELECT MAX(COUNT(DISTINCT P))
+  7  FROM AREA NATURAL JOIN PROFESOR
+  8  GROUP BY CD));
+
+D                                                                                                                                                                                                       
+------------------------------------------------------------                                                                                                                                            
+ESTADISTICA, INVESTIGACION OPERATIVA Y COMPUTACION                                                                                                                                                      
+
+SQL> 
+SQL> 
+SQL> 
+SQL> REM 25
+SQL> SELECT D
+  2  FROM DEPARTAMENTO
+  3  WHERE CD IN (SELECT CD
+  4  FROM AREA NATURAL JOIN PROFESOR
+  5  GROUP BY CD
+  6  HAVING COUNT(DISTINCT P)=(SELECT MIN(COUNT(DISTINCT P))
+  7  FROM AREA NATURAL JOIN PROFESOR
+  8  GROUP BY CD));
+
+D                                                                                                                                                                                                       
+------------------------------------------------------------                                                                                                                                            
+ASTROFISICA                                                                                                                                                                                             
+MATEMATICA FUNDAMENTAL                                                                                                                                                                                  
+
+SQL> 
+SQL> SPOOL OFF
