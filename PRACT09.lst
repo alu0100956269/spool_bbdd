@@ -1,0 +1,308 @@
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> 
+SQL> REM PARA QUE SE VEAN LAS COSAS POR PANTALLA
+SQL> 
+SQL> SET SERVEROUTPUT ON
+SQL> 
+SQL> 
+SQL> REM HOLA MUNDO
+SQL> 
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3  END;
+  4  /
+HOLA MUNDO                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> SAVE HOLAMUNDO
+Created file HOLAMUNDO.sql
+SQL> REM PARA GUARDAR ESE TROZO DE CODIGO
+SQL> 
+SQL> REM PARA EJECUTARLO OTRA VEZ
+SQL> GET HOLAMUNDO
+  1  BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3* END;
+SQL> RUN
+  1  BEGIN
+  2  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  3* END;
+HOLA MUNDO                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> @HOLAMUNDO
+HOLA MUNDO                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> REM EL @ ES PARA QUE LO CARGUE Y EJECUTE DIRECTAMENTE
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE HELLOWORLD IS
+  2  BEGIN
+  3  DBMS_OUTPUT.PUT_LINE('HOLA MUNDO');
+  4  END;
+  5  /
+
+Procedure created.
+
+SQL> HELLOWORLD
+SP2-0042: unknown command "HELLOWORLD" - rest of line ignored.
+SQL> 
+SQL> 
+SQL> BEGIN
+  2  HOLAMUNDO();
+  3  END;
+  4  /
+HOLAMUNDO();
+*
+ERROR at line 2:
+ORA-06550: line 2, column 1: 
+PLS-00201: identifier 'HOLAMUNDO' must be declared 
+ORA-06550: line 2, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> BEGIN
+  2  HELLOWORLD();
+  3  END;
+  4  /
+HOLA MUNDO                                                                      
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> CALL HELLOWORLD();
+HOLA MUNDO                                                                      
+
+Call completed.
+
+SQL> 
+SQL> SELECT HELLOWORLD()
+  2  FROM DUAL;
+SELECT HELLOWORLD()
+       *
+ERROR at line 1:
+ORA-00904: "HELLOWORLD": invalid identifier 
+
+
+SQL> 
+SQL> 
+SQL> CREATE OR REPLACE FUNCTION DOBLE(X NUMBER) RETURN NUMBER IS
+  2  BEGIN
+  3  RETURN 2*X;
+  4  END;
+  5  /
+
+Function created.
+
+SQL> 
+SQL> SELECT DOBLE(5) FROM DUAL;
+
+  DOBLE(5)                                                                      
+----------                                                                      
+        10                                                                      
+
+SQL> 
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE(DOBLE(4));
+  3  END;
+  4  /
+8                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> 
+SQL> CALL DOBLE(4)
+  2  ;
+CALL DOBLE(4)
+     *
+ERROR at line 1:
+ORA-06576: not a valid function or procedure name 
+
+
+SQL> 
+SQL> VARIABLE X NUMBER
+SQL> 
+SQL> CALL DOBLE(4) INTO X;
+CALL DOBLE(4) INTO X
+                   *
+ERROR at line 1:
+ORA-01745: invalid host/bind variable name 
+
+
+SQL> 
+SQL> 
+SQL> CALL DOBLE(4) INTO :X;
+
+Call completed.
+
+SQL> 
+SQL> PRINT X;
+
+         X                                                                      
+----------                                                                      
+         8                                                                      
+
+SQL> 
+SQL> CREATE OR REPLACE FUNCTION NOMPROF(DOC PROFESOR.DNI%TYPE) RETURN PROFESOR.P%TYPE IS
+  2  N PROFESOR.P%TYPE;
+  3  BEGIN
+  4  SELECT P INTO N
+  5  FROM PROFESOR
+  6  WHERE DNI=DOC;
+  7  RETURN N;
+  8  END;
+  9  /
+
+Function created.
+
+SQL> 
+SQL> BEGIN
+  2  DBMS_OUPUT.PUT_LINE('EL NOMBRE DEL PROFESOR ES: ' || NOMPROF(1111));
+  3  END;
+  4  /
+DBMS_OUPUT.PUT_LINE('EL NOMBRE DEL PROFESOR ES: ' || NOMPROF(1111));
+*
+ERROR at line 2:
+ORA-06550: line 2, column 1: 
+PLS-00201: identifier 'DBMS_OUPUT.PUT_LINE' must be declared 
+ORA-06550: line 2, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE(NOMPROF(1111));
+  3  END;
+  4  /
+JUAN                                                                            
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT P
+  2  FROM PROFESOR
+  3  WHERE DNI=&D;
+Enter value for d: 1111
+old   3: WHERE DNI=&D
+new   3: WHERE DNI=1111
+
+P                                                                               
+------------------------------------------------------------                    
+JUAN                                                                            
+
+SQL> RUN
+  1  SELECT P
+  2  FROM PROFESOR
+  3* WHERE DNI=&D
+Enter value for d: 2222
+old   3: WHERE DNI=&D
+new   3: WHERE DNI=2222
+
+P                                                                               
+------------------------------------------------------------                    
+CARLOS                                                                          
+
+SQL> 
+SQL> 
+SQL> SELECT * FROM &TABLA;
+Enter value for tabla: PROFESOR
+old   1: SELECT * FROM &TABLA
+new   1: SELECT * FROM PROFESOR
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      1111 JUAN                                                                 
+         6 CU                                                                   
+                                                                                
+      2222 CARLOS                                                               
+         7 TU                                                                   
+                                                                                
+      3333 PEDRO                                                                
+         4 TEU                                                                  
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      4444 MARIA                                                                
+         7 TU                                                                   
+                                                                                
+      5555 IVAN                                                                 
+         1 CEU                                                                  
+                                                                                
+      6666 CARMEN                                                               
+         3 CD                                                                   
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      7777 MARIO                                                                
+         2 TU                                                                   
+                                                                                
+      8888 FRANCISCO                                                            
+         5 TU                                                                   
+                                                                                
+      9999 ANGELA                                                               
+         8 TEU                                                                  
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      1010 DAVID                                                                
+         4 TU                                                                   
+                                                                                
+      2020 SOLEDAD                                                              
+         7 CU                                                                   
+                                                                                
+      3030 JOSE MANUEL                                                          
+         6 TEU                                                                  
+                                                                                
+
+       DNI P                                                                    
+---------- ------------------------------------------------------------         
+       CAR CAT                                                                  
+---------- -----                                                                
+      4040 CARMELO                                                              
+         7 TU                                                                   
+                                                                                
+      5050 CARINA                                                               
+         8 CEU                                                                  
+                                                                                
+
+14 rows selected.
+
+SQL> SET LINESIZE 200
+SQL> 
+SQL> CREATE OR REPLACE PROCEDURE LISTPROF IS
+  2  CURSOR C IS SELECT * FROM PROFESOR;
+  3  FILA PROFESOR%ROWTYPE;
+  4  BEGIN
+  5  OPEN C;
+  6  LOOP
+  7  FETCH C INTO FILA;
+  8  EXIT WHEN C&NOTFOUND;
+  9  DBMS_OUTPUT.PUT_LINE(FILA.DNI, FILA.P, FILA.CAT);
+ 10  END LOOP;
+ 11  CLOSE C;
+ 12  END;
+ 13  /
+Enter value for notfound: EXIT
+old   8: EXIT WHEN C&NOTFOUND;
+new   8: EXIT WHEN CEXIT;
+
+Warning: Procedure created with compilation errors.
+
+SQL> REM CAMBIAR EL & POR %
+SQL> SPOOL OFF
