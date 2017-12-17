@@ -1,0 +1,421 @@
+SQL> ;
+SP2-0223: No lines in SQL buffer.
+SQL> 
+SQL> DECLARE
+  2  TYPE VAL_ARRAY IS VARRAY(3) OF NUMBER;
+  3  FRIST3 VAL_ARRAY := (-1,-1,-1);
+  4  BEGIN
+  5  SET SERVEROUTPUT ON;
+  6  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  7  END;
+  8  /
+SET SERVEROUTPUT ON;
+    *
+ERROR at line 5:
+ORA-06550: line 5, column 5: 
+PL/SQL: ORA-00922: missing or invalid option 
+ORA-06550: line 5, column 1: 
+PL/SQL: SQL Statement ignored 
+
+
+SQL> SET SERVEROUTPUT ON
+SQL> DECLARE
+  2  TYPE VAL_ARRAY IS VARRAY(3) OF NUMBER;
+  3  FRIST3 VAL_ARRAY := (-1,-1,-1);
+  4  BEGIN
+  5  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  6  END;
+  7  /
+FRIST3 VAL_ARRAY := (-1,-1,-1);
+                    *
+ERROR at line 3:
+ORA-06550: line 3, column 21: 
+PLS-00382: expression is of wrong type 
+ORA-06550: line 3, column 8: 
+PL/SQL: Item ignored 
+ORA-06550: line 5, column 22: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 5, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> DECLARE
+  2  TYPE VAL_ARRAY IS VARRAY(3) OF NUMBER;
+  3  FRIST3 VAL_ARRAY;
+  4  BEGIN
+  5  FRIST3(1):=-1;
+  6  FRIST3(2):=-1;
+  7  FRIST3(3):=-1;
+  8  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  9  END;
+ 10  /
+DECLARE
+*
+ERROR at line 1:
+ORA-06531: Reference to uninitialized collection 
+ORA-06512: at line 5 
+
+
+SQL> 
+SQL> DECLARE
+  2  FIRST3 VARRAY(3) OF NUMBER;
+  3  BEGIN
+  4  FRIST3(1):=-1;
+  5  FRIST3(2):=-1;
+  6  FRIST3(3):=-1;
+  7  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  8  END;
+  9  /
+FIRST3 VARRAY(3) OF NUMBER;
+                 *
+ERROR at line 2:
+ORA-06550: line 2, column 18: 
+PLS-00103: Encountered the symbol "OF" when expecting one of the following: 
+:= ; not null default character 
+
+
+SQL> 
+SQL> 
+SQL> DECLARE
+  2  CREATE TYPE FIRST3 AS VARRAY(3) OF NUMBER;
+  3  BEGIN
+  4  FRIST3(1):=-1;
+  5  FRIST3(2):=-1;
+  6  FRIST3(3):=-1;
+  7  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  8  END;
+  9  /
+CREATE TYPE FIRST3 AS VARRAY(3) OF NUMBER;
+*
+ERROR at line 2:
+ORA-06550: line 2, column 1: 
+PLS-00103: Encountered the symbol "CREATE" when expecting one of the following: 
+begin function pragma procedure subtype type <an identifier> 
+<a double-quoted delimited-identifier> current cursor delete 
+exists prior 
+
+
+SQL> 
+SQL> DECLARE
+  2  TYPE FIRST3 AS VARRAY(3) OF NUMBER;
+  3  BEGIN
+  4  FRIST3(1):=-1;
+  5  FRIST3(2):=-1;
+  6  FRIST3(3):=-1;
+  7  DBMS_OUTPUT.PUT_LINE(FRIST3(3));
+  8  END;
+  9  /
+TYPE FIRST3 AS VARRAY(3) OF NUMBER;
+               *
+ERROR at line 2:
+ORA-06550: line 2, column 16: 
+PLS-00103: Encountered the symbol "VARRAY" when expecting one of the following: 
+object opaque 
+
+
+SQL> 
+SQL> DECLARE
+  2  TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  3  FIRST3 INT_ARR := (0,0,0);
+  4  BEGIN
+  5  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+  6  END;
+  7  /
+FIRST3 INT_ARR := (0,0,0);
+                  *
+ERROR at line 3:
+ORA-06550: line 3, column 19: 
+PLS-00382: expression is of wrong type 
+ORA-06550: line 3, column 8: 
+PL/SQL: Item ignored 
+ORA-06550: line 5, column 22: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 5, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> 
+SQL> DECLARE
+  2  TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  3  FIRST3 INT_ARR := INT_ARR(0,0,0);
+  4  BEGIN
+  5  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+  6  END;
+  7  /
+0                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> 
+SQL> DECLARE
+  2  TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  3  FIRST3 INT_ARR := INT_ARR(-1,-1,-1);
+  4  BEGIN
+  5  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+  6  END;
+  7  /
+-1                                                                              
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> DECLARE
+  2  TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  3  FIRST3 INT_ARR := INT_ARR(-1,-1,-1);
+  4  AUX NUMBER(2);
+  5  CHANGER NUMBER(2);
+  6  CURSOR C_ARR IS (SELECT CD, COUNT(DISTINCT AR) N_AR FROM AREA GROUP BY CD);
+  7  BEGIN
+  8  OPEN C_ARR;
+  9  LOOP
+ 10  FETCH C_ARR.N_AR INTO AUX;
+ 11  EXIT WHEN C_ARR%NOTFOUND;
+ 12  IF (AUX > FIRST3(1)) THEN
+ 13  CHANGER := FIRST3(1);
+ 14  FIRST3(1):=AUX;
+ 15  AUX:=FIRST3(2);
+ 16  FIRST3(2):=CHANGER;
+ 17  FIRST3(3):=AUX;
+ 18  ELSIF (AUX>FIRST3(2)) THEN
+ 19  CHANGER:=FIRST3(2);
+ 20  FIRST3(2):=AUX;
+ 21  FIRST3(3):=CHANGER;
+ 22  ELSIF (AUX>FIRST3(3)) THEN
+ 23  FIRST3(3):=AUX;
+ 24  END IF;
+ 25  END LOOP;
+ 26  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+ 27  END;
+ 28  /
+FETCH C_ARR.N_AR INTO AUX;
+      *
+ERROR at line 10:
+ORA-06550: line 10, column 7: 
+PLS-00225: subprogram or cursor 'C_ARR' reference is out of scope 
+ORA-06550: line 10, column 1: 
+PL/SQL: SQL Statement ignored 
+
+
+SQL> 
+SQL> DECLARE
+  2  CURSOR C_ARR IS (SELECT CD, COUNT(DISTINCT AR) N_AR FROM AREA GROUP BY CD);
+  3  R_ARR C_ARR%ROWTYPE;
+  4  BEGIN
+  5  OPEN C_ARR;
+  6  FETCH C_ARR INTO R_ARR;
+  7  DBMS_OUTPUT.PUT_LINE(R_ARR.N_AR);
+  8  END;
+  9  /
+3                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> DECLARE TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  2  FIRST3 INT_ARR := (-1,-1,-1);
+  3  AUX NUMBER(2);
+  4  CHANGER NUMBER(2);
+  5  NOM_DEP DEPARTAMENTO.D%TYPE;
+  6  CURSOR C_ARR IS (SELECT CD, COUNT(DISTINCT AR) N_AR FROM AREA GROUP BY CD);
+  7  R_ARR C_ARR%ROWTYPE;
+  8  BEGIN
+  9  OPEN C_ARR;
+ 10  LOOP
+ 11    FETCH C_ARR INTO R_ARR;
+ 12    AUX := R_ARR.N_AR;
+ 13    EXIT WHEN C_ARR%NOTFOUND;
+ 14    IF (AUX > FIRST3(1)) THEN
+ 15    CHANGER := FIRST3(1);
+ 16    FIRST3(1):=AUX;
+ 17    AUX:=FIRST3(2);
+ 18    FIRST3(2):=CHANGER;
+ 19    FIRST3(3):=AUX;
+ 20    ELSIF (AUX>FIRST3(2)) THEN
+ 21    CHANGER:=FIRST3(2);
+ 22    FIRST3(2):=AUX;
+ 23    FIRST3(3):=CHANGER;
+ 24    ELSIF (AUX>FIRST3(3)) THEN
+ 25    FIRST3(3):=AUX;
+ 26    END IF;
+ 27  END LOOP;
+ 28  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+ 29  END;
+ 30   /
+FIRST3 INT_ARR := (-1,-1,-1);
+                  *
+ERROR at line 2:
+ORA-06550: line 2, column 19: 
+PLS-00382: expression is of wrong type 
+ORA-06550: line 2, column 8: 
+PL/SQL: Item ignored 
+ORA-06550: line 14, column 13: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 14, column 3: 
+PL/SQL: Statement ignored 
+ORA-06550: line 28, column 22: 
+PLS-00320: the declaration of the type of this expression is incomplete or 
+malformed 
+ORA-06550: line 28, column 1: 
+PL/SQL: Statement ignored 
+
+
+SQL> 
+SQL> 
+SQL> DECLARE TYPE INT_ARR IS VARRAY(3) OF NUMBER;
+  2  FIRST3 INT_ARR := INT_ARR(-1,-1,-1);
+  3  AUX NUMBER(2);
+  4  CHANGER NUMBER(2);
+  5  NOM_DEP DEPARTAMENTO.D%TYPE;
+  6  CURSOR C_ARR IS (SELECT CD, COUNT(DISTINCT AR) N_AR FROM AREA GROUP BY CD);
+  7  R_ARR C_ARR%ROWTYPE;
+  8  BEGIN
+  9  OPEN C_ARR;
+ 10  LOOP
+ 11    FETCH C_ARR INTO R_ARR;
+ 12    AUX := R_ARR.N_AR;
+ 13    EXIT WHEN C_ARR%NOTFOUND;
+ 14    IF (AUX > FIRST3(1)) THEN
+ 15    CHANGER := FIRST3(1);
+ 16    FIRST3(1):=AUX;
+ 17    AUX:=FIRST3(2);
+ 18    FIRST3(2):=CHANGER;
+ 19    FIRST3(3):=AUX;
+ 20    ELSIF (AUX>FIRST3(2)) THEN
+ 21    CHANGER:=FIRST3(2);
+ 22    FIRST3(2):=AUX;
+ 23    FIRST3(3):=CHANGER;
+ 24    ELSIF (AUX>FIRST3(3)) THEN
+ 25    FIRST3(3):=AUX;
+ 26    END IF;
+ 27  END LOOP;
+ 28  DBMS_OUTPUT.PUT_LINE(FIRST3(3));
+ 29  END;
+ 30   /
+1                                                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> SELECT * FROM AREA;
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         1 ALGEBRA                                                              
+         4                                                                      
+                                                                                
+         2 ANALISIS MATEMATICO                                                  
+         1                                                                      
+                                                                                
+         3 ASTRONOMIA Y ASTROFISICA                                             
+         2                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         4 CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                 
+         3                                                                      
+                                                                                
+         5 DIDACTICA DE LA MATEMATICA                                           
+         1                                                                      
+                                                                                
+         6 ESTADISTICA E INVESTIGACION OPERATIVA                                
+         3                                                                      
+                                                                                
+
+       CAR AR                                                                   
+---------- ------------------------------------------------------------         
+        CD                                                                      
+----------                                                                      
+         7 LENGUAJES Y SISTEMAS INFORMATICOS                                    
+         3                                                                      
+                                                                                
+         8 MATEMATICAS APLICADAS                                                
+         1                                                                      
+                                                                                
+
+8 rows selected.
+
+SQL> 
+SQL> 
+SQL> DECLARE
+  2  BEGIN
+  3  DBMS_OUTPUT.PUT_LINE(SELECT CD FROM DEPARTAMENTO;);
+  4  END;
+  5  /
+DBMS_OUTPUT.PUT_LINE(SELECT CD FROM DEPARTAMENTO;);
+                     *
+ERROR at line 3:
+ORA-06550: line 3, column 22: 
+PLS-00103: Encountered the symbol "SELECT" when expecting one of the following: 
+( ) - + case mod new not null <an identifier> 
+<a double-quoted delimited-identifier> <a bind variable> 
+table continue avg count current exists max min prior sql 
+stddev sum variance execute multiset the both leading 
+trailing forall merge year month day hour minute second 
+timezone_hour timezone_minute timezone_region timezone_abbr 
+time timestamp interval date 
+<a string literal with character set specifica 
+ORA-06550: line 3, column 50: 
+PLS-00103: Encountered the symbol ")"  
+
+
+SQL> BEGIN
+  2  DBMS_OUTPUT.PUT_LINE(SELECT CD FROM DEPARTAMENTO);
+  3  END;
+  4  /
+DBMS_OUTPUT.PUT_LINE(SELECT CD FROM DEPARTAMENTO);
+                     *
+ERROR at line 2:
+ORA-06550: line 2, column 22: 
+PLS-00103: Encountered the symbol "SELECT" when expecting one of the following: 
+( ) - + case mod new not null <an identifier> 
+<a double-quoted delimited-identifier> <a bind variable> 
+table continue avg count current exists max min prior sql 
+stddev sum variance execute multiset the both leading 
+trailing forall merge year month day hour minute second 
+timezone_hour timezone_minute timezone_region timezone_abbr 
+time timestamp interval date 
+<a string literal with character set specifica 
+ORA-06550: line 2, column 50: 
+PLS-00103: Encountered the symbol ";" when expecting one of the following: 
+) , and or 
+
+
+SQL> 
+SQL> CREATE PROCEDURE NOM_AR (COD DEPARTAMENTO.CD%TYPE) IS
+  2  CURSOR C IS (SELECT AR FROM DEPARTAMENTO NATURAL JOIN AREA WHERE CD=COD);
+  3  AUX C%ROWTYPE;
+  4  BEGIN
+  5  OPEN C;
+  6  LOOP
+  7  FETCH C INTO AUX;
+  8  EXIT WHEN C%NOTFOUND;
+  9  DBMS_OUTPUT.PUT_LINE(AUX.AR);
+ 10  END LOOP;
+ 11  CLOSE C;
+ 12  END;
+ 13  /
+
+Procedure created.
+
+SQL> 
+SQL> 
+SQL> BEGIN
+  2  NOM_AR(3);
+  3  END;
+  4  /
+CIENCIAS DE LA COMPUTACION E INTELIGENCIA ARTIFICIAL                            
+ESTADISTICA E INVESTIGACION OPERATIVA                                           
+LENGUAJES Y SISTEMAS INFORMATICOS                                               
+
+PL/SQL procedure successfully completed.
+
+SQL> spool off
